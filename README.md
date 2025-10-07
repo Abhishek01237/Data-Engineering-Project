@@ -17,37 +17,43 @@ Transformation	Delta Live Tables (DLT), PySpark
 Storage	Delta Lake (Bronze, Silver, Gold)
 Orchestration	Databricks Workflows
 Compute	Databricks Cluster (SQL + Spark)
-🧩 Architecture Overview
-            ┌────────────────────────────────────────┐
-            │              Source Data               │
-            │     (Raw files, JSON, CSV, etc.)       │
-            └────────────────────────────────────────┘
-                              │
-                              ▼
-                ┌────────────────────────────┐
-                │  Bronze Layer (Raw Zone)   │
-                │  → Data Ingested via       │
-                │    Databricks Autoloader   │
-                └────────────────────────────┘
-                              │
-                              ▼
-                ┌────────────────────────────┐
-                │  Silver Layer (Clean Zone) │
-                │  → Delta Live Tables (DLT) │
-                │  → Data validation & joins │
-                └────────────────────────────┘
-                              │
-                              ▼
-                ┌────────────────────────────┐
-                │  Gold Layer (Enriched Zone)│
-                │  → Business logic & SCDs   │
-                │  → Aggregations & lookups  │
-                └────────────────────────────┘
-                              │
-                              ▼
-                   📊 Analytics / BI Layer
+🧩 # **Architecture Overview**
+   The pipeline is built following the Medallion Architecture, structured into three core layers:
 
-⚙️ Pipeline Stages
+**Bronze Layer – Raw Zone**
+
+- > Ingests raw files from cloud storage (CSV, JSON, etc.) using Databricks Autoloader.
+
+- > Automatically detects new data and handles schema drift.
+
+- > Stores raw data in Delta format for versioning and reliability.
+
+**Silver Layer – Cleansed Zone**
+
+- > Built using Delta Live Tables (DLT) for managed and incremental data processing.
+
+- > Applies data cleaning, normalization, and type standardization.
+
+- > Handles deduplication, joins, and data validation.
+
+**Gold Layer – Enriched Zone**
+
+- > Transforms Silver data into business-ready tables.
+
+- > Implements Slowly Changing Dimensions (SCD Type 2) for historical accuracy.
+
+- > Applies lookups, aggregations, and business logic for reporting.
+
+- > Outputs curated data ready for analytics or visualization tools (e.g., Power BI).
+
+**Analytics / BI Layer**
+
+- > Gold tables serve as the source for dashboards and analytics.
+
+Supports ad-hoc querying and data exploration directly from the Delta tables        
+
+**⚙️ Pipeline Stages**
+
 1. Ingestion – Bronze Layer
 
 Used Databricks Autoloader for incremental data ingestion from cloud storage.
@@ -72,7 +78,7 @@ Implemented Slowly Changing Dimensions (SCD Type 2) to maintain historical accur
 
 Created curated datasets for downstream analytics and dashboards.
 
-📘 Key Learnings
+**Key Learnings**
 
 Designed and implemented the Medallion Architecture using native Databricks capabilities.
 
@@ -84,32 +90,6 @@ Applied data modeling and SCD concepts using PySpark.
 
 Created an extendable framework for enterprise-grade data processing.
 
-🚀 Future Enhancements
-
-Integrate with Unity Catalog for governance and lineage.
-
-Schedule and monitor jobs via Databricks Workflows.
-
-Expose Gold datasets to Power BI or Tableau for analytics.
-
-Add CI/CD automation for DLT pipelines using GitHub Actions.
-
-📄 Repository Structure
-databricks-medallion-architecture/
-│
-├── notebooks/
-│   ├── bronze_ingestion_autoloader.ipynb
-│   ├── silver_dlt_transformation.ipynb
-│   └── gold_enrichment_scd.ipynb
-│
-├── configs/
-│   ├── autoloader_config.json
-│   └── dlt_pipeline_settings.json
-│
-├── resources/
-│   └── sample_data/
-│
-└── README.md
 
 
 💡 Inspired by the Databricks Lakehouse paradigm, this project showcases a clean, modular, and production-friendly way to build modern data pipelines with minimal overhead.
