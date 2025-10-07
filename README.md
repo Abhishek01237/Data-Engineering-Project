@@ -5,7 +5,7 @@ This project demonstrates scalable, maintainable, and production-ready Delta Lak
 
  **Goal**: To design a robust and automated data pipeline that ingests raw data, applies transformations, and delivers enriched analytical datasets — the modern lakehouse way.
 
-📂 **Dataset**
+ **Dataset**
 
 The project uses simulated transactional and dimensional datasets representing a retail/sales scenario ( customers, orders, products, and sales).
 These datasets are processed through three medallion layers to illustrate incremental data refinement and business-ready analytics.
